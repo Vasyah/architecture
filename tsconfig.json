@@ -1,16 +1,19 @@
 {
     "compilerOptions": {
-      "outDir": "./dist/",
-      "sourceMap": true,
-      "strict": true,
-      "noImplicitReturns": true,
-      "noImplicitAny": true,
-      "module": "es6",
-      "moduleResolution": "node",
-      "target": "ES2015",
-      "allowJs": true
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "strict": true,
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "module": "es6",
+        "moduleResolution": "Node",
+        "target": "ES2015",
+        "allowJs": true,
+        // This compiler run should
+        // only output d.ts files
+        "emitDeclarationOnly": true,
+        // Generate d.ts files
+        "declaration": true
     },
-    "include": [
-        "./src/**/*"
-    ]
+    "include": ["./src/**/*", "index.d.ts"]
 }

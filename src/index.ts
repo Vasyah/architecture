@@ -1,5 +1,6 @@
-import factory from "./utils/local-storage";
+import { StorageOptions } from "./kv-storage/interface";
+import factory from "./kv-storage";
 
-const ls = factory("user");
+const ls = factory("user", { engine: "sessionStorage" });
 
-ls.set("hello", "value");
+ls.set("hello", "value"); // create LSFactory class instance
