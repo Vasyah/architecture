@@ -1,3 +1,6 @@
-export const sum = (a:number,b:number) => a+ b
+import * as ls from "./utils/local-storage";
 
-sum(1,3)
+const root = document.querySelector("#root");
+
+root?.classList.add("URAN");
+ls.set("hello", "value");

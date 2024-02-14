@@ -1,12 +1,16 @@
-const webpack = require('webpack');
+
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 const config = {
+    mode: process.env.MODE,
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js'
     },
+
     module: {
         rules: [
             {
@@ -18,11 +22,12 @@ const config = {
     },
     devServer: {
         static: {
-            directory: path.join(__dirname, 'public'),
+            directory: path.resolve(__dirname, 'public'),
         },
         compress: true,
         port: 9000,
         client: {
+
             progress: true,
         }
     },
@@ -32,7 +37,14 @@ const config = {
             '.ts',
             '.js'
         ]
-    }
+    },
+    plugins: [	// плагин для создания html файла с подключенными скриптами
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, 'public/index.html'),
+        }), new webpack.DefinePlugin({
+            __IS_DEV__: process.env.MODE,
+        })],
+
 };
 
-module.exports = config;
+module.exports = { ...config, stats: { children: true } };
