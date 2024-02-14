@@ -1,35 +1,75 @@
 // create LSFactory class instance
-export default function factory(namespace: string): LSFactory {
-  return new LSFactory(namespace);
+export default function factory(namespace: string, opts: StorageOptions): LSFactory {
+    return new LSFactory(namespace, opts);
 }
 
-/**
- * Class creates workspace to working with LocalStorage with {namespace} prefix
- */
- * Функция является фабрикой для работы с LocalStorage
- * @param namespace - имя префикса
- * @returns
- */
+type SerializablePrimitiveValue = string | number | boolean | null;
+
+type SerializableValue =
+    | SerializablePrimitiveValue
+    | SerializablePrimitiveValue[]
+    | Record<string, SerializablePrimitiveValue>
+    | { toJSON(): SerializableValue };
+
+type StorageEngine = "localStorage" | "sessionStorage";
+
+type StorageOptions = {
+    engine?: StorageEngine;
+};
+
 export class LSFactory {
-  readonly namespace: string;
+    readonly namespace: string;
+    readonly engine: StorageEngine;
 
-  constructor(namespace: string) {
-    this.namespace = namespace;
-  }
+    constructor(namespace: string, opts: StorageOptions) {
+        this.namespace = namespace;
+        this.engine = opts?.engine ?? "localStorage";
+    }
 
-  get(name: string): string | null {
-    return localStorage.getItem(this.#getKey(name));
-  }
+    async get<T extends SerializableValue>(name: string): Promise<T | null> {
+        let rawData;
 
-  set(name: string, value: string): void {
-    localStorage.setItem(this.#getKey(name), value);
-  }
+        switch (this.engine) {
+            case "localStorage":
+                rawData = localStorage.getItem(this.#getKey(name)) ?? "null";
+                break;
 
-  remove(name: string): void {
-    localStorage.removeItem(this.#getKey(name));
-  }
+            case "sessionStorage":
+                rawData = sessionStorage.getItem(this.#getKey(name)) ?? "null";
+                break;
+        }
 
-  #getKey(key: string) {
-    return `{{${this.namespace}}}-${key}`;
-  }
+        return JSON.parse(rawData);
+    }
+
+    async set(name: string, value: string): Promise<void> {
+        const key = this.#getKey(name);
+        const data = JSON.stringify(value);
+
+        switch (this.engine) {
+            case "localStorage":
+                localStorage.setItem(key, data);
+                break;
+            case "sessionStorage":
+                sessionStorage.setItem(key, data);
+                break;
+        }
+    }
+
+    async remove(name: string): Promise<void> {
+        const key = this.#getKey(name);
+
+        switch (this.engine) {
+            case "localStorage":
+                localStorage.setIremoveItemtem(key);
+                break;
+            case "sessionStorage":
+                sessionStorage.removeItem(key);
+                break;
+        }
+    }
+
+    #getKey(key: string) {
+        return `{{${this.namespace}}}-${key}`;
+    }
 }
