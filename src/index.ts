@@ -1,6 +1,5 @@
-import * as ls from "./utils/local-storage";
+import lsFactory from "./utils/local-storage";
 
-const root = document.querySelector("#root");
+const ls = lsFactory("user");
 
-root?.classList.add("URAN");
 ls.set("hello", "value");
