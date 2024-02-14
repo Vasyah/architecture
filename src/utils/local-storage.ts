@@ -1,3 +1,8 @@
+/**
+ * Функция является фабрикой для работы с LocalStorage
+ * @param namespace - имя префикса
+ * @returns
+ */
 export default function factory(namespace: string) {
   function getKey(key: string) {
     return `{{${namespace}}}-${key}`;
