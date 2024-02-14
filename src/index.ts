@@ -1,5 +1,5 @@
-import lsFactory from "./utils/local-storage";
+import factory from "./utils/local-storage";
 
-const ls = lsFactory("user");
+const ls = factory("user");
 
 ls.set("hello", "value");
