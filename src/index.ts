@@ -1,6 +1,7 @@
 import { StorageOptions } from "./kv-storage/interface";
-import factory from "./kv-storage";
+import kvFactory from "./kv-storage";
+import { SessionStorageEngine } from "./kv-storage/engines";
 
-const ls = factory("user", { engine: "sessionStorage" });
+const ls = kvFactory("user", { engine: new SessionStorageEngine() });
 
 ls.set("hello", "value"); // create LSFactory class instance

@@ -1,4 +1,4 @@
-import { KVStorageEngine } from "./engines/interface";
+import { KVStorageEngine } from "./engines";
 
 export type StorageOptions = {
     engine?: KVStorageEngine;
